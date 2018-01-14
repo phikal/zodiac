@@ -1,6 +1,7 @@
 #!/bin/sh
 
 __zod_config() {
+  [ -e "$proj/.zod/state" ] || touch -t 197001010000 "$proj/.zod/state"
   cat - "$proj/.zod/config" <<! 2>/dev/null
 [parse]
 htm,html

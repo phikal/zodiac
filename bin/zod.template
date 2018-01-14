@@ -23,6 +23,7 @@ _zod_exec() {
       -v zod_lib="$zod_lib" \
       -v proj="$proj" \
       -v target="$target" | sh
+  touch "$proj/.zod/state"
 }
 
 [ "$#" -ne 2 ] && { echo "usage: zod projectdir targetdir"; exit; }
