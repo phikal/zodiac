@@ -1,6 +1,12 @@
 BEGIN {
   section = "none"
   action = "config"
+  if (system("which nproc > /dev/null") == 0) {
+	  "nproc --all" | getline procs
+	  procs = procs
+  } else {
+	  procs = 1
+  }
 }
 
 END {
@@ -26,5 +32,6 @@ END {
   for (i = 0; i < length(opts); i++) {
     optpart = optpart " " opts[i]
   }
-  printf "find \"%s\" -type f \\( %s \\) -exec zod-%s \"%s\" \"%s\" \"%s\" {} \\;", proj, optpart, phase, zod_lib, proj, target
+  printf "find \"%s\" -type f -cnewer \"%s/.zod/state\" \\( %s \\) -print0 | xargs -0 -P %s -I {} zod-%s \"%s\" \"%s\" \"%s\" {} \\;",
+	  proj, proj, optpart, procs, phase, zod_lib, proj, target
 }
